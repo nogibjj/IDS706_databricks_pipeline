@@ -30,7 +30,6 @@ I used Databricks CLI in CICD to automatically trigger the pipeline workflow in 
         DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
         DATABRICKS_JOB_ID: ${{ secrets.DATABRICKS_JOB_ID }}
       run: |
-        databricks configure --host $DATABRICKS_HOST --token $DATABRICKS_TOKEN
         databricks jobs run-now --job-id $DATABRICKS_JOB_ID
 ```
 
