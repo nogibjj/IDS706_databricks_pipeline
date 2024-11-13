@@ -6,4 +6,4 @@ format:
 	black . --line-length 100 --verbose
 
 lint:
-	ruff check src/ --fix --verbose
+	ruff check . --fix --verbose

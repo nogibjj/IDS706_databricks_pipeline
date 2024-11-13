@@ -1,3 +1,6 @@
+from pyspark.sql import SparkSession
+
+
 def query(spark, table_name="taxi_trips"):
     query = f"""
     SELECT
@@ -15,13 +18,11 @@ def query(spark, table_name="taxi_trips"):
         total_trips DESC
     LIMIT 5
     """
-    
+
     result = spark.sql(query)
     result.show()
 
-from pyspark.sql import SparkSession
 
 if __name__ == "__main__":
     spark = SparkSession.builder.appName("TripDataAnalysis").getOrCreate()
     query(spark)
-    
