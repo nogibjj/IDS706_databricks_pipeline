@@ -1,0 +1,36 @@
+name: CI/CD
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:                    # Global permissions configuration starts here
+  contents: write                # 'read' access to repository contents
+  pull-requests: write          # 'write' access to pull requests
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+        fetch-depth: 0
+    - name: Install
+      run: |
+        make install
+    - name: Format
+      run: |
+        make format
+    - name: Lint
+      run: |
+        make lint
+    - name: Run Databricks Pipeline
+      env:
+        DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+        DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+        DATABRICKS_JOB_ID: ${{ secrets.DATABRICKS_JOB_ID }}
+      run: |
+        databricks configure --host $DATABRICKS_HOST --token $DATABRICKS_TOKEN
+        databricks jobs run-now --job-id $DATABRICKS_JOB_ID
